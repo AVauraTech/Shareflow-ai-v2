@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareFlow AI – Gamified Autonomous Resource Sharing Ecosystem</title>
+    <meta name="description" content="Next-generation decentralized resource sharing platform powered by agentic semantic matching, geospatial proximity radar, circular karma economy, and real-time barter negotiation.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Ambient Background Lighting -->
+    <div class="blob-cont" aria-hidden="true">
+        <div class="blob blob-one"></div>
+        <div class="blob blob-two"></div>
+        <div class="blob blob-three"></div>
+    </div>
+
+    <!-- Live Telemetry & HUD Ticker -->
+    <header class="hud-ticker">
+        <div class="hud-left">
+            <span class="hud-badge tier" id="hudUserTier"><i class="fa-solid fa-shield-halved"></i> Tier: Neighborhood Guardian</span>
+            <span class="hud-badge karma" id="hudUserKarma"><i class="fa-solid fa-coins"></i> 1,420 Karma Credits (3.2x)</span>
+            <span class="hud-badge escrow" id="hudUserEscrow"><i class="fa-solid fa-lock"></i> 50 Locked in Escrow</span>
+            <span class="hud-badge streak" id="hudUserStreak"><i class="fa-solid fa-fire"></i> 12-Day Zero-Waste Streak</span>
+        </div>
+        <div class="hud-right">
+            <span style="font-size: 0.78rem;"><i class="fa-solid fa-satellite-dish"></i> Node: Seattle Eastside</span>
+            <button id="radarSoundToggle" class="agentic-action-btn" style="padding: 0.15rem 0.6rem;" onclick="toggleRadarAudio()" title="Toggle Sonar Audio Ping">
+                <i class="fa-solid fa-volume-high"></i> Sonar SFX
+            </button>
+            <div style="display:flex; align-items:center; gap:0.4rem;">
+                <label for="profileSwitcher" style="font-size:0.75rem;">Profile:</label>
+                <select id="profileSwitcher" class="user-switcher-select" onchange="switchProfile(this.value)">
+                    <option value="Admin">Admin (Level 14 Guardian)</option>
+                    <option value="Alice">Alice (Level 8 Pillar)</option>
+                    <option value="Bob">Bob (Level 6 Helper)</option>
+                    <option value="Charlie">Charlie (Level 2 Newcomer)</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Proactive Agentic Matchmaker Banner -->
+    <aside class="agentic-banner" id="agenticAlertBanner">
+        <div class="agentic-banner-content">
+            <span class="agentic-pill"><i class="fa-solid fa-robot"></i> Agentic Matchmaker</span>
+            <span id="agenticBannerText">Found 2 peer requests matching items in your garage (e.g. Alice's "wood repair" ↔ Your "Drill Set" – 95% SBERT match)!</span>
+        </div>
+        <button class="agentic-action-btn" onclick="openAgenticMatchReview()">
+            Review & Auto-Propose Trade <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </aside>
+
+    <!-- Sticky Glassmorphic Navigation -->
+    <nav class="glass-nav" aria-label="Main Navigation">
+        <div class="logo-container" onclick="showSection('home')">
+            <div class="logo-icon">
+                <i class="fa-solid fa-atom"></i>
+            </div>
+            <div class="logo-text">Share<span>Flow</span> <small style="font-size:0.7rem; font-weight:400; opacity:0.8;">2.0 AI</small></div>
+        </div>
+        <div class="nav-links">
+            <a class="nav-item active" id="nav-home" onclick="showSection('home')"><i class="fa-solid fa-house"></i> Home</a>
+            <a class="nav-item" id="nav-radar" onclick="showSection('radar')"><i class="fa-solid fa-crosshairs"></i> Radar Map</a>
+            <a class="nav-item" id="nav-marketplace" onclick="showSection('marketplace')"><i class="fa-solid fa-box-open"></i> Marketplace</a>
+            <a class="nav-item" id="nav-ai-lab" onclick="showSection('ai-lab')"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Vision Lab</a>
+            <a class="nav-item" id="nav-karma" onclick="showSection('karma')"><i class="fa-solid fa-shield-cat"></i> Karma & Raids</a>
+            <a class="nav-item" id="nav-impact" onclick="showSection('impact')"><i class="fa-solid fa-chart-pie"></i> Impact</a>
+            <a class="nav-item" id="nav-leaderboard" onclick="showSection('leaderboard')"><i class="fa-solid fa-trophy"></i> Rankings</a>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+            <button class="nav-action-btn" onclick="openCreateListingModal()">
+                <i class="fa-solid fa-plus-circle"></i> Create Listing
+            </button>
+            <button class="btn-secondary" style="padding:0.5rem 1rem; font-size:0.85rem;" onclick="openBarterDrawer()">
+                <i class="fa-solid fa-comments"></i> Barter Hub <span id="barterBadgeCount" class="badge badge-offer" style="margin-left:0.3rem;">1</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Application -->
+    <main id="main-content">
+        <!-- 1. HOME & OVERVIEW SECTION -->
+        <section id="home" class="active-section">
+            <div class="hero-wrapper">
+                <div>
+                    <div class="hero-tag">
+                        <i class="fa-solid fa-bolt"></i> Autonomous Circular Economy 2.0
+                    </div>
+                    <h1 class="hero-title">
+                        Share Smarter.<br>
+                        <span class="gradient-title">Zero-Waste Community.</span>
+                    </h1>
+                    <p class="hero-sub">
+                        Transform neighborhood lending with <strong>SBERT agentic semantic matching</strong>, 
+                        live <strong>geospatial proximity radar</strong>, and a gamified <strong>Circular Karma economy</strong> that rewards accountability.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn-primary" onclick="showSection('radar')">
+                            <i class="fa-solid fa-radar"></i> Launch Proximity Radar
+                        </button>
+                        <button class="btn-secondary" onclick="showSection('marketplace')">
+                            <i class="fa-solid fa-magnifying-glass"></i> Explore Listings
+                        </button>
+                        <button class="btn-accent" onclick="showSection('ai-lab')">
+                            <i class="fa-solid fa-camera"></i> AI Condition Scan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hero Telemetry Box -->
+                <div class="hero-telemetry-box glass-panel">
+                    <div class="telemetry-header">
+                        <div class="telemetry-title">
+                            <i class="fa-solid fa-wave-square" style="color:var(--accent-cyan);"></i> Live Ecosystem Telemetry
+                        </div>
+                        <span class="badge badge-offer"><i class="fa-solid fa-circle" style="font-size:0.5rem;"></i> 99.9% UPTIME</span>
+                    </div>
+                    <div class="telemetry-grid">
+                        <div class="tele-stat-card">
+                            <div class="tele-stat-label"><i class="fa-solid fa-repeat"></i> Active Circulations</div>
+                            <div class="tele-stat-value" id="heroActivePosts">24</div>
+                            <div class="tele-stat-sub">+65% item re-circulation</div>
+                        </div>
+                        <div class="tele-stat-card">
+                            <div class="tele-stat-label"><i class="fa-solid fa-users"></i> Verified Neighbors</div>
+                            <div class="tele-stat-value" id="heroActiveUsers">142</div>
+                            <div class="tele-stat-sub">42% 30-day retention</div>
+                        </div>
+                        <div class="tele-stat-card">
+                            <div class="tele-stat-label"><i class="fa-solid fa-leaf"></i> CO₂ Diverted</div>
+                            <div class="tele-stat-value" id="heroTotalCarbon">384 kg</div>
+                            <div class="tele-stat-sub">Equivalent to 19 trees</div>
+                        </div>
+                        <div class="tele-stat-card">
+                            <div class="tele-stat-label"><i class="fa-solid fa-hand-holding-dollar"></i> Dollars Saved</div>
+                            <div class="tele-stat-value" id="heroTotalSaved">$4,850</div>
+                            <div class="tele-stat-sub">Sub-3 min settlement</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Live Radar Preview Snippet -->
+            <div class="glass-panel" style="padding:2rem; margin-top:1.5rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1.5rem; border-left: 4px solid var(--accent-cyan);">
+                <div>
+                    <h3 style="font-size:1.3rem; margin-bottom:0.3rem;"><i class="fa-solid fa-location-crosshairs" style="color:var(--accent-cyan);"></i> 6 Nearby Resources Detected within 1.5 Miles</h3>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">DeWalt Cordless Drill (0.3 mi), General Chemistry Textbook (0.8 mi), Dome Camping Tent (1.2 mi), and more.</p>
+                </div>
+                <button class="btn-primary" style="padding:0.7rem 1.6rem;" onclick="showSection('radar')">
+                    Open Full Radar Map <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. GEOSPATIAL PROXIMITY RADAR SECTION -->
+        <section id="radar" class="section-hidden">
+            <div class="radar-section-header">
+                <div class="section-headline">
+                    <h2><i class="fa-solid fa-crosshairs" style="color:var(--accent-cyan);"></i> Live Geospatial Proximity Radar</h2>
+                    <p>Real-time cluster of available community inventory mapped within your immediate neighborhood perimeter.</p>
+                </div>
+                <button class="btn-primary" style="padding:0.6rem 1.4rem;" onclick="triggerSonarPing()">
+                    <i class="fa-solid fa-satellite"></i> Ping Sonar Sweep
+                </button>
+            </div>
+
+            <!-- Controls bar -->
+            <div class="filter-bar glass-panel" style="margin-bottom:1.5rem;">
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.9rem;">
+                    <i class="fa-solid fa-ruler-horizontal" style="color:var(--accent-cyan);"></i> Radius: 
+                    <strong id="radarRadiusDisplay" style="color:var(--accent-cyan);">2.0 Miles</strong>
+                    <input type="range" id="radarRadiusSlider" min="0.5" max="5.0" step="0.5" value="2.0" class="radar-range-slider" style="margin-left:0.5rem;" oninput="updateRadarRadius(this.value)">
+                </label>
+                <div style="height:20px; width:1px; background:var(--glass-border);"></div>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;" id="radarCategoryPills">
+                    <button class="toggle-btn active" onclick="setRadarCategory('all')">All Nodes</button>
+                    <button class="toggle-btn" onclick="setRadarCategory('Tools')">Tools</button>
+                    <button class="toggle-btn" onclick="setRadarCategory('Books')">Books</button>
+                    <button class="toggle-btn" onclick="setRadarCategory('Outdoors')">Outdoors</button>
+                    <button class="toggle-btn" onclick="setRadarCategory('Electronics')">Electronics</button>
+                </div>
+            </div>
+
+            <div class="radar-main-wrapper">
+                <!-- Radar Canvas Display -->
+                <div class="radar-canvas-container">
+                    <div class="radar-overlay-hud">
+                        <span>LAT: 47.6062° N | LON: 122.3321° W</span>
+                        <span id="radarActiveNodesCount">PULSING: 6 NODES</span>
+                    </div>
+                    <canvas id="radarCanvas" width="600" height="600"></canvas>
+                </div>
+
+                <!-- Radar Inspector Sidebar -->
+                <div class="radar-sidebar">
+                    <div class="radar-inspect-card glass-panel" id="radarActiveInspectCard">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                            <span class="badge badge-offer" id="inspectBadge">OFFER</span>
+                            <span style="font-size:0.8rem; color:var(--accent-cyan);" id="inspectDistance"><i class="fa-solid fa-location-arrow"></i> 0.3 mi away</span>
+                        </div>
+                        <img id="inspectImg" src="images/drill_set.jpg" alt="Item Preview" style="width:100%; height:160px; border-radius:12px; object-fit:cover; margin-bottom:0.8rem; border:1px solid var(--glass-border);">
+                        <h3 id="inspectTitle" style="font-size:1.2rem; margin-bottom:0.4rem;">DeWalt Cordless Drill Kit</h3>
+                        <p id="inspectDesc" style="font-size:0.85rem; color:var(--text-muted); line-height:1.4; margin-bottom:1rem;">Complete 18V kit with extra battery. Perfect for furniture and home fixes.</p>
+                        <div style="display:flex; justify-content:space-between; font-size:0.82rem; color:var(--text-muted); margin-bottom:1.2rem; border-top:1px solid var(--glass-border); padding-top:0.8rem;">
+                            <span><i class="fa-solid fa-user"></i> Owner: <strong id="inspectOwner" style="color:#fff;">Bob</strong></span>
+                            <span><i class="fa-solid fa-star" style="color:#ffd700;"></i> 4.9 (18 ratings)</span>
+                        </div>
+                        <button class="btn-primary" style="width:100%; padding:0.7rem;" onclick="initiateInspectBarter()">
+                            <i class="fa-solid fa-handshake"></i> Initiate Instant Barter
+                        </button>
+                    </div>
+
+                    <!-- Neighborhood Nodes List -->
+                    <div class="glass-panel" style="padding:1.2rem; border-radius:20px;">
+                        <h4 style="font-size:0.95rem; margin-bottom:0.8rem; display:flex; justify-content:space-between;">
+                            <span>Clustered Nodes</span>
+                            <small style="color:var(--text-muted);">Click to inspect</small>
+                        </h4>
+                        <div class="radar-nodes-list" id="radarNodesList">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. MARKETPLACE & AI SEMANTIC SEARCH SECTION -->
+        <section id="marketplace" class="section-hidden">
+            <div class="radar-section-header">
+                <div class="section-headline">
+                    <h2><i class="fa-solid fa-boxes-stacked" style="color:var(--accent-cyan);"></i> Community Resource Marketplace</h2>
+                    <p>Discover neighborhood inventory with hybrid exact keyword and SBERT semantic vector search.</p>
+                </div>
+                <button class="btn-primary" onclick="openCreateListingModal()">
+                    <i class="fa-solid fa-plus"></i> Post Resource
+                </button>
+            </div>
+
+            <!-- Advanced Filter Bar -->
+            <div class="filter-bar glass-panel">
+                <div class="search-box-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search (e.g. 'wood repair', 'calculus book', 'camping')..." onkeyup="filterPosts()">
+                </div>
+                <button class="ai-search-toggle active" id="semanticSearchToggle" onclick="toggleSemanticSearch()">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span>SBERT AI Semantic Mode</span>
+                </button>
+                <select id="categoryFilter" class="category-select" onchange="filterPosts()">
+                    <option value="all">All Categories</option>
+                    <option value="Tools">Tools</option>
+                    <option value="Books">Books</option>
+                    <option value="Outdoors">Outdoors</option>
+                    <option value="Clothes">Clothes</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Other">Other</option>
+                </select>
+                <div class="toggle-group">
+                    <button class="toggle-btn active" id="filter-all" onclick="setPostTypeFilter('all')">All</button>
+                    <button class="toggle-btn" id="filter-offer" onclick="setPostTypeFilter('offer')">Offers</button>
+                    <button class="toggle-btn" id="filter-request" onclick="setPostTypeFilter('request')">Requests</button>
+                </div>
+            </div>
+
+            <!-- Posts Grid Container -->
+            <div class="grid-container" id="postsGrid">
+                <!-- Posts Injected by JS -->
+            </div>
+        </section>
+
+        <!-- 4. AI VISION CONDITION LAB & AGENTIC MATCHMAKER -->
+        <section id="ai-lab" class="section-hidden">
+            <div class="radar-section-header">
+                <div class="section-headline">
+                    <h2><i class="fa-solid fa-robot" style="color:var(--accent-cyan);"></i> AI Vision Lab & Agentic Matchmaker</h2>
+                    <p>Multimodal condition assessment with defect diagnostics and autonomous cosine trade matchmaker.</p>
+                </div>
+            </div>
+
+            <div class="ai-lab-wrapper">
+                <!-- Scanner Dropzone & Controls -->
+                <div class="scanner-box glass-panel">
+                    <h3 style="font-size:1.3rem; margin-bottom:0.5rem;"><i class="fa-solid fa-camera-retro" style="color:var(--accent-cyan);"></i> Multimodal Condition Assessment</h3>
+                    <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:1.5rem;">Upload or select a sample photo to run computer-vision defect inspection, category detection, and Karma valuation.</p>
+                    
+                    <div class="demo-presets-row">
+                        <span style="font-size:0.8rem; color:var(--text-muted); align-self:center;">Try Demo Preset:</span>
+                        <button class="preset-chip active" onclick="loadScannerPreset('drill')">Cordless Drill</button>
+                        <button class="preset-chip" onclick="loadScannerPreset('book')">Chemistry Book</button>
+                        <button class="preset-chip" onclick="loadScannerPreset('tent')">Camping Tent</button>
+                        <button class="preset-chip" onclick="loadScannerPreset('jacket')">Vintage Denim</button>
+                    </div>
+
+                    <div class="scanner-dropzone" id="scannerDropzone" onclick="triggerScanAnimation()">
+                        <div class="scanner-laser"></div>
+                        <img id="scannerPreviewImg" src="images/drill_set.jpg" class="scanner-preview-img" style="display:block; margin:0 auto 1rem auto;" alt="Item to scan">
+                        <div id="dropzonePrompt">
+                            <i class="fa-solid fa-cloud-arrow-up" style="font-size:2.5rem; color:var(--accent-cyan); margin-bottom:0.5rem;"></i>
+                            <p style="font-weight:600;">Click to Run Gemini Vision Scan</p>
+                            <small style="color:var(--text-muted);">Simulates real-time defect segmentation & wear grading</small>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" style="width:100%; padding:0.85rem;" onclick="triggerScanAnimation()">
+                        <i class="fa-solid fa-microchip"></i> Execute Deep AI Scan
+                    </button>
+                </div>
+
+                <!-- AI Diagnosis Result Card -->
+                <div class="ai-results-card glass-panel" id="aiScanResultsBox">
+                    <div class="ai-grade-banner">
+                        <div>
+                            <span style="font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted);">Verified Quality Score</span>
+                            <h3 id="aiGradeLabel" style="font-size:1.4rem;">Grade A- (Like New)</h3>
+                            <small id="aiConfidenceLabel" style="color:var(--accent-emerald);">98.4% Confidence via Vision Model</small>
+                        </div>
+                        <div class="ai-grade-tag" id="aiGradeBadge">A-</div>
+                    </div>
+
+                    <div class="ai-metrics-list">
+                        <div class="ai-metric-item">
+                            <span>Detected Object</span>
+                            <strong id="aiDetectedName">Cordless Power Drill Kit (18V)</strong>
+                        </div>
+                        <div class="ai-metric-item">
+                            <span>Auto-Tagged Category</span>
+                            <strong id="aiDetectedCat" style="color:var(--accent-cyan);">Tools & Workshop</strong>
+                        </div>
+                        <div class="ai-metric-item">
+                            <span>Surface Wear & Cosmetic Defect</span>
+                            <strong id="aiDefectLevel" style="color:var(--accent-emerald);">&lt; 2.5% (Minimal Scratching)</strong>
+                        </div>
+                        <div class="ai-metric-item">
+                            <span>Functional Integrity Rating</span>
+                            <strong id="aiIntegrity">100% (Motor & Battery Intact)</strong>
+                        </div>
+                        <div class="ai-metric-item">
+                            <span>Recommended Loan Duration</span>
+                            <strong id="aiLoanDuration">3 – 5 Days</strong>
+                        </div>
+                        <div class="ai-metric-item">
+                            <span>Estimated Replacement Value</span>
+                            <strong id="aiReplacementVal">$149.00 USD</strong>
+                        </div>
+                        <div class="ai-metric-item">
+                            <span>Minted Karma Reward</span>
+                            <strong style="color:var(--accent-amber);" id="aiKarmaMint">+75 Karma / Lending Cycle</strong>
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(0,0,0,0.3); padding:1rem; border-radius:12px; border:1px solid var(--glass-border); margin-bottom:1.5rem;">
+                        <span style="font-size:0.78rem; color:var(--text-muted); text-transform:uppercase;">Extracted Semantic Tags:</span>
+                        <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.4rem;" id="aiTagsContainer">
+                            <span class="badge" style="background:rgba(0,229,255,0.1); color:var(--accent-cyan);">#powertool</span>
+                            <span class="badge" style="background:rgba(0,229,255,0.1); color:var(--accent-cyan);">#cordless</span>
+                            <span class="badge" style="background:rgba(0,229,255,0.1); color:var(--accent-cyan);">#woodworking</span>
+                            <span class="badge" style="background:rgba(0,229,255,0.1); color:var(--accent-cyan);">#18v-brushless</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-accent" style="width:100%; padding:0.85rem;" onclick="publishScannedItem()">
+                        <i class="fa-solid fa-paper-plane"></i> Publish Listing with AI Metadata
+                    </button>
+                </div>
+            </div>
+
+            <!-- Autonomous Matchmaker Proposals Table -->
+            <div class="glass-panel" style="padding:2rem; margin-top:2.5rem; border-radius:24px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+                    <div>
+                        <h3 style="font-size:1.3rem; margin-bottom:0.25rem;"><i class="fa-solid fa-bezier-curve" style="color:var(--accent-purple);"></i> Autonomous Semantic Matchmaker Queue</h3>
+                        <p style="color:var(--text-muted); font-size:0.88rem;">Background agent pairing open Requests with inventory Offers using SBERT cosine distance.</p>
+                    </div>
+                    <span class="badge badge-offer"><i class="fa-solid fa-bolt"></i> 3 AUTO-MATCHES FOUND</span>
+                </div>
+
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.9rem;">
+                        <thead>
+                            <tr style="border-bottom:1px solid var(--glass-border); color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">
+                                <th style="padding:0.75rem 1rem;">Target Request</th>
+                                <th style="padding:0.75rem 1rem;">Matched Offer</th>
+                                <th style="padding:0.75rem 1rem;">Semantic Similarity</th>
+                                <th style="padding:0.75rem 1rem;">Distance</th>
+                                <th style="padding:0.75rem 1rem;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="agentMatchesTableBody">
+                            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                                <td style="padding:1rem;">
+                                    <strong>"Need wood repair for table"</strong><br>
+                                    <small style="color:var(--text-muted);">Requester: Alice</small>
+                                </td>
+                                <td style="padding:1rem;">
+                                    <strong>"DeWalt Cordless Drill Kit"</strong><br>
+                                    <small style="color:var(--text-muted);">Lender: Bob</small>
+                                </td>
+                                <td style="padding:1rem;">
+                                    <span class="badge" style="background:rgba(0,255,157,0.15); color:var(--accent-emerald);">95.2% Cosine Match</span>
+                                </td>
+                                <td style="padding:1rem; color:var(--accent-cyan);">0.3 miles</td>
+                                <td style="padding:1rem;">
+                                    <button class="btn-card-primary" onclick="initiateAutoMatch('Alice', 'Bob', 'DeWalt Cordless Drill Kit')">Auto-Propose Barter</button>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                                <td style="padding:1rem;">
+                                    <strong>"Studying for chem midterm"</strong><br>
+                                    <small style="color:var(--text-muted);">Requester: Charlie</small>
+                                </td>
+                                <td style="padding:1rem;">
+                                    <strong>"General Chemistry 10th Ed."</strong><br>
+                                    <small style="color:var(--text-muted);">Lender: Admin</small>
+                                </td>
+                                <td style="padding:1rem;">
+                                    <span class="badge" style="background:rgba(0,255,157,0.15); color:var(--accent-emerald);">96.8% Cosine Match</span>
+                                </td>
+                                <td style="padding:1rem; color:var(--accent-cyan);">0.8 miles</td>
+                                <td style="padding:1rem;">
+                                    <button class="btn-card-primary" onclick="initiateAutoMatch('Charlie', 'Admin', 'General Chemistry 10th Ed.')">Auto-Propose Barter</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. KARMA ECONOMY & COMMUNITY RAIDS SECTION -->
+        <section id="karma" class="section-hidden">
+            <div class="radar-section-header">
+                <div class="section-headline">
+                    <h2><i class="fa-solid fa-shield-cat" style="color:var(--accent-amber);"></i> Circular Karma Economy & Community Raids</h2>
+                    <p>Lend items to earn Karma Tokens, lock tokens in escrow during borrowing, and join cooperative neighborhood raids.</p>
+                </div>
+                <button class="btn-primary" onclick="openContributeRaidModal()">
+                    <i class="fa-solid fa-flag"></i> Join Active Raid
+                </button>
+            </div>
+
+            <!-- Active Community Raids -->
+            <div class="raids-grid" id="raidsContainer">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Progression Tiers & Dynamic Badges -->
+            <div class="glass-panel" style="padding:2.5rem; border-radius:24px; margin-bottom:2.5rem;">
+                <h3 style="font-size:1.4rem; margin-bottom:0.5rem;"><i class="fa-solid fa-medal" style="color:#ffd700;"></i> Karma Rank Progression Ladder</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:2rem;">Your current standing: <strong id="karmaLadderRank" style="color:var(--accent-cyan);">Level 14 – Neighborhood Guardian</strong></p>
+
+                <!-- Tier Steps -->
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem; margin-bottom:2.5rem;">
+                    <div class="tele-stat-card" style="border-left:3px solid var(--text-dim);">
+                        <small style="color:var(--text-muted);">Tier 1 (Lvl 1-3)</small>
+                        <h4 style="margin:0.25rem 0;">Newcomer</h4>
+                        <p style="font-size:0.78rem; color:var(--text-muted);">Base 1.0x multiplier, max 2 active borrowings.</p>
+                    </div>
+                    <div class="tele-stat-card" style="border-left:3px solid var(--accent-cyan);">
+                        <small style="color:var(--accent-cyan);">Tier 2 (Lvl 4-7)</small>
+                        <h4 style="margin:0.25rem 0;">Resource Helper</h4>
+                        <p style="font-size:0.78rem; color:var(--text-muted);">1.5x multiplier, unlocks power tools escrow.</p>
+                    </div>
+                    <div class="tele-stat-card" style="border-left:3px solid var(--accent-purple);">
+                        <small style="color:var(--accent-purple);">Tier 3 (Lvl 8-12)</small>
+                        <h4 style="margin:0.25rem 0;">Community Pillar</h4>
+                        <p style="font-size:0.78rem; color:var(--text-muted);">2.2x multiplier, priority proximity radar ping.</p>
+                    </div>
+                    <div class="tele-stat-card" style="border-left:3px solid #ffd700; background:rgba(255,215,0,0.06);">
+                        <small style="color:#ffd700;">Tier 4 (Lvl 13+)</small>
+                        <h4 style="margin:0.25rem 0; color:#ffd700;">Neighborhood Guardian</h4>
+                        <p style="font-size:0.78rem; color:var(--text-muted);">3.2x multiplier, escrow guarantee sponsor, zero decay.</p>
+                    </div>
+                </div>
+
+                <!-- Unlockable Dynamic SVG Badges -->
+                <h4 style="font-size:1.1rem; margin-bottom:0.75rem;"><i class="fa-solid fa-award" style="color:var(--accent-cyan);"></i> Dynamic Unlockable Badges</h4>
+                <div class="badges-container" id="badgesContainer">
+                    <!-- Badges injected via JS -->
+                </div>
+            </div>
+
+            <!-- Adversarial Anti-Hoarding & Reliability Rating Gauge -->
+            <div class="glass-panel" style="padding:2rem; border-radius:24px; display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center;">
+                <div>
+                    <h3 style="font-size:1.3rem; margin-bottom:0.5rem;"><i class="fa-solid fa-shield-halved" style="color:var(--accent-emerald);"></i> Anti-Hoarding Escrow & Trust Metric</h3>
+                    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6; margin-bottom:1rem;">
+                        To prevent item hoarding or ghosting, borrowed items temporarily lock Karma tokens in an escrow smart contract.
+                        Returning the item on schedule releases the escrow, mints a +1.5x Karma bonus, and extends your Zero-Waste streak.
+                    </p>
+                    <div style="display:flex; gap:1.5rem;">
+                        <div>
+                            <small style="color:var(--text-muted);">Trust Score</small>
+                            <h4 style="font-size:1.8rem; color:var(--accent-emerald);" id="trustScoreVal">99.2%</h4>
+                        </div>
+                        <div>
+                            <small style="color:var(--text-muted);">Timely Return Rate</small>
+                            <h4 style="font-size:1.8rem; color:var(--accent-cyan);">100% (24/24)</h4>
+                        </div>
+                        <div>
+                            <small style="color:var(--text-muted);">Decay Penalty</small>
+                            <h4 style="font-size:1.8rem; color:var(--text-dim);">0.0% (Clean)</h4>
+                        </div>
+                    </div>
+                </div>
+                <div style="background:rgba(0,0,0,0.35); padding:1.5rem; border-radius:18px; border:1px solid var(--glass-border);">
+                    <h4 style="font-size:1rem; margin-bottom:0.5rem; color:#fff;">Escrow Lifecycle Contract</h4>
+                    <ol style="font-size:0.85rem; color:var(--text-muted); line-height:1.8; padding-left:1.2rem;">
+                        <li><strong>Step 1:</strong> Borrower locks 50 Karma tokens in escrow.</li>
+                        <li><strong>Step 2:</strong> Real-time handover verified via dynamic QR code.</li>
+                        <li><strong>Step 3:</strong> Active countdown timer monitors borrow duration.</li>
+                        <li><strong>Step 4:</strong> Receiver scans QR on return -> Escrow released + Multiplier minted.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. IMPACT & SUSTAINABILITY DASHBOARD -->
+        <section id="impact" class="section-hidden">
+            <div class="radar-section-header">
+                <div class="section-headline">
+                    <h2><i class="fa-solid fa-leaf" style="color:var(--accent-emerald);"></i> Sustainability & Impact Dashboard</h2>
+                    <p>Quantifying your community carbon offset, e-waste diversion, and cumulative economic savings.</p>
+                </div>
+                <button class="btn-primary" onclick="openCertificateModal()">
+                    <i class="fa-solid fa-certificate"></i> Generate Official Certificate
+                </button>
+            </div>
+
+            <!-- Impact Hero 4 Metrics -->
+            <div class="impact-hero-grid">
+                <div class="impact-metric-card glass-panel">
+                    <div class="impact-icon" style="color:var(--accent-emerald);"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+                    <div class="impact-val" id="impactCo2">142.5 kg</div>
+                    <p style="color:var(--text-muted); font-size:0.85rem;">CO₂ Emissions Diverted</p>
+                    <small style="color:var(--accent-emerald); font-size:0.75rem;">+18.4 kg this month</small>
+                </div>
+                <div class="impact-metric-card glass-panel">
+                    <div class="impact-icon" style="color:var(--accent-cyan);"><i class="fa-solid fa-piggy-bank"></i></div>
+                    <div class="impact-val" id="impactSaved">$1,840.00</div>
+                    <p style="color:var(--text-muted); font-size:0.85rem;">Peer Capital Retained</p>
+                    <small style="color:var(--accent-cyan); font-size:0.75rem;">Across 24 transactions</small>
+                </div>
+                <div class="impact-metric-card glass-panel">
+                    <div class="impact-icon" style="color:var(--accent-amber);"><i class="fa-solid fa-recycle"></i></div>
+                    <div class="impact-val" id="impactEwaste">38.2 kg</div>
+                    <p style="color:var(--text-muted); font-size:0.85rem;">Landfill & E-Waste Prevented</p>
+                    <small style="color:var(--accent-amber); font-size:0.75rem;">12 power tools & electronics</small>
+                </div>
+                <div class="impact-metric-card glass-panel">
+                    <div class="impact-icon" style="color:var(--accent-purple);"><i class="fa-solid fa-arrows-spin"></i></div>
+                    <div class="impact-val" id="impactCirculation">24 Items</div>
+                    <p style="color:var(--text-muted); font-size:0.85rem;">Active Circular Velocity</p>
+                    <small style="color:var(--accent-purple); font-size:0.75rem;">Top 1% in Seattle East</small>
+                </div>
+            </div>
+
+            <!-- Comparative Sustainability Charts -->
+            <div class="glass-panel" style="padding:2.5rem; border-radius:24px;">
+                <h3 style="font-size:1.3rem; margin-bottom:1.5rem;"><i class="fa-solid fa-chart-simple" style="color:var(--accent-cyan);"></i> Neighborhood Benchmark Performance</h3>
+                <div style="display:flex; flex-direction:column; gap:1.5rem;">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:0.4rem;">
+                            <span>Your Household CO₂ Avoidance vs. Metro Average (Goal: 200 kg)</span>
+                            <strong style="color:var(--accent-emerald);">71% of Annual Goal</strong>
+                        </div>
+                        <div class="progress-track" style="height:14px;">
+                            <div class="progress-fill" style="width:71%;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:0.4rem;">
+                            <span>Resource Circularity Index (Peer Re-use Velocity)</span>
+                            <strong style="color:var(--accent-cyan);">94th Percentile</strong>
+                        </div>
+                        <div class="progress-track" style="height:14px;">
+                            <div class="progress-fill" style="width:94%; background:linear-gradient(90deg, #6366f1, #06b6d4);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. LEADERBOARDS SECTION -->
+        <section id="leaderboard" class="section-hidden">
+            <div class="radar-section-header">
+                <div class="section-headline">
+                    <h2><i class="fa-solid fa-trophy" style="color:#ffd700;"></i> Localized Community Rankings</h2>
+                    <p>Recognizing top lenders, zero-waste streak champions, and highest-rated community pillars.</p>
+                </div>
+            </div>
+
+            <div class="leaderboard-container glass-panel" style="max-width:850px; margin:0 auto; padding:2rem; border-radius:24px;">
+                <div style="display:flex; gap:0.5rem; margin-bottom:1.5rem;" id="leaderboardTabs">
+                    <button class="toggle-btn active" onclick="switchLeaderboardTab('karma')">By Karma Credits</button>
+                    <button class="toggle-btn" onclick="switchLeaderboardTab('streak')">By Zero-Waste Streak</button>
+                    <button class="toggle-btn" onclick="switchLeaderboardTab('carbon')">By CO₂ Saved</button>
+                </div>
+                <div id="leaderboardList">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- SLIDE-OVER REAL-TIME BARTER & CHAT DRAWER -->
+    <div class="barter-drawer-overlay" id="barterDrawerOverlay" onclick="closeBarterDrawer()"></div>
+    <aside class="barter-drawer" id="barterDrawer" aria-label="Barter and Negotiation Drawer">
+        <div class="drawer-header">
+            <div>
+                <h3 style="font-size:1.15rem; color:#fff;"><i class="fa-solid fa-handshake" style="color:var(--accent-cyan);"></i> Live Barter Negotiation</h3>
+                <small style="color:var(--text-muted);">Direct P2P WebSocket Channel</small>
+            </div>
+            <button class="close-btn" style="position:static;" onclick="closeBarterDrawer()">&times;</button>
+        </div>
+
+        <div class="drawer-body">
+            <!-- Active Contract Summary Card -->
+            <div class="drawer-contract-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                    <span class="badge badge-offer" id="drawerContractStatus">IN NEGOTIATION</span>
+                    <span style="font-size:0.8rem; color:var(--accent-amber);" id="drawerCountdownTimer"><i class="fa-regular fa-clock"></i> 47h 59m remaining</span>
+                </div>
+                <h4 id="drawerItemTitle" style="font-size:1.05rem; margin-bottom:0.25rem;">DeWalt Cordless Drill Kit</h4>
+                <p id="drawerEscrowTerms" style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.75rem;">Escrow Stake: 50 Karma Locked | Lender: Bob</p>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="btn-card-primary" style="flex:1;" onclick="acceptBarterContract()">Accept Terms</button>
+                    <button class="btn-card-secondary" style="flex:1;" onclick="proposeCounterOffer()">Counter-Offer</button>
+                </div>
+            </div>
+
+            <!-- Dynamic QR Code Handover Verification -->
+            <div class="qr-verification-zone">
+                <span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--accent-cyan); font-weight:700;">
+                    <i class="fa-solid fa-qrcode"></i> Handover QR Verification
+                </span>
+                <canvas id="handoverQrCanvas" width="140" height="140"></canvas>
+                <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.75rem;">Both peers scan on item exchange to verify state & release escrow.</p>
+                <button class="btn-accent" style="width:100%; font-size:0.85rem; padding:0.55rem;" onclick="simulateQrHandoverReturn()">
+                    <i class="fa-solid fa-check-double"></i> Simulate Peer Scan & Return
+                </button>
+            </div>
+
+            <!-- Live Chat Thread -->
+            <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-top:0.5rem;">
+                <i class="fa-solid fa-comments"></i> Negotiation Thread
+            </div>
+            <div class="drawer-chat-box" id="drawerChatMessages">
+                <div class="chat-bubble peer">
+                    <strong>Bob:</strong> Hi! The drill has a fully charged battery and 12 bits included. Need it back by Sunday evening!
+                </div>
+                <div class="chat-bubble me">
+                    <strong>You:</strong> Sounds great! I just need it to assemble two bookshelves on Saturday. Locking 50 Karma in escrow now.
+                </div>
+            </div>
+        </div>
+
+        <form class="chat-input-bar" onsubmit="sendBarterMessage(event)">
+            <input type="text" id="barterChatInput" class="form-control" style="margin:0;" placeholder="Message lender or counter-propose..." required>
+            <button type="submit" class="btn-primary" style="padding:0.75rem 1.25rem;"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+    </aside>
+
+    <!-- CREATE LISTING MODAL -->
+    <div id="postModal" class="modal">
+        <div class="modal-content glass-panel">
+            <span class="close-btn" onclick="closeModal('postModal')">&times;</span>
+            <h2 style="margin-bottom:0.5rem;"><i class="fa-solid fa-plus-circle" style="color:var(--accent-cyan);"></i> Create New Listing</h2>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem;">Offer an item to earn Karma credits or request what you need from neighbors.</p>
+
+            <form id="postForm" onsubmit="handleCreatePost(event)">
+                <div class="form-group">
+                    <label>Listing Type</label>
+                    <div style="display:flex; gap:1rem;">
+                        <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+                            <input type="radio" name="pType" value="offer" checked> <strong>Offer Item</strong> (Earn Karma)
+                        </label>
+                        <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+                            <input type="radio" name="pType" value="request"> <strong>Request Item</strong> (Lock Escrow)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pItemName">Item Name</label>
+                    <input type="text" id="pItemName" class="form-control" placeholder="e.g. DeWalt Cordless Drill Kit" required>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label for="pCategory">Category</label>
+                        <select id="pCategory" class="form-control">
+                            <option value="Tools">Tools</option>
+                            <option value="Books">Books</option>
+                            <option value="Outdoors">Outdoors</option>
+                            <option value="Clothes">Clothes</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pCondition">Condition Grade</label>
+                        <select id="pCondition" class="form-control">
+                            <option value="Brand New">Brand New</option>
+                            <option value="Like New">Like New (Grade A-)</option>
+                            <option value="Fair">Fair (Minor wear)</option>
+                            <option value="Heavily Used">Heavily Used</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label for="pLocation">Neighborhood / Location</label>
+                        <input type="text" id="pLocation" class="form-control" placeholder="e.g. Downtown / Seattle East">
+                    </div>
+                    <div class="form-group">
+                        <label for="pImgSelect">Photo / Sample Image</label>
+                        <select id="pImgSelect" class="form-control">
+                            <option value="images/drill_set.jpg">Cordless Drill Set</option>
+                            <option value="images/chemistry_book.jpg">Chemistry Textbook</option>
+                            <option value="images/camping_tent.jpg">Dome Camping Tent</option>
+                            <option value="images/vintage_jacket.jpg">Vintage Denim Jacket</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pDesc">Description & Terms</label>
+                    <textarea id="pDesc" class="form-control" rows="3" placeholder="Describe the item condition, accessories included, and loan availability..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%; padding:0.85rem; margin-top:0.5rem;">
+                    Publish Listing to Proximity Radar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ITEM DETAILS / RATING / COMMENTS MODAL -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content glass-panel">
+            <span class="close-btn" onclick="closeModal('detailsModal')">&times;</span>
+            <img id="detailImg" src="images/drill_set.jpg" alt="Item preview" style="width:100%; height:200px; border-radius:14px; object-fit:cover; margin-bottom:1rem; border:1px solid var(--glass-border);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                <span class="badge badge-offer" id="detailBadge">OFFER</span>
+                <span style="font-size:0.85rem; color:var(--accent-cyan);" id="detailLocation"><i class="fa-solid fa-location-dot"></i> Downtown (0.3 mi)</span>
+            </div>
+            <h2 id="detailTitle" style="font-size:1.4rem; margin-bottom:0.4rem;">Item Name</h2>
+            <p id="detailDesc" style="color:var(--text-muted); font-size:0.92rem; line-height:1.5; margin-bottom:1.5rem;"></p>
+
+            <div style="background:rgba(0,0,0,0.3); padding:1rem; border-radius:12px; border:1px solid var(--glass-border); margin-bottom:1.5rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span>Owner: <strong id="detailOwner" style="color:#fff;">OwnerName</strong></span>
+                    <div style="display:flex; gap:0.25rem;" id="detailStarRow">
+                        <i class="fa-regular fa-star" onclick="rateOwner(1)"></i>
+                        <i class="fa-regular fa-star" onclick="rateOwner(2)"></i>
+                        <i class="fa-regular fa-star" onclick="rateOwner(3)"></i>
+                        <i class="fa-regular fa-star" onclick="rateOwner(4)"></i>
+                        <i class="fa-regular fa-star" onclick="rateOwner(5)"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
+                <button class="btn-primary" style="flex:1; padding:0.75rem;" onclick="initiateModalBarter()">
+                    <i class="fa-solid fa-handshake"></i> Initiate Barter
+                </button>
+                <button class="btn-secondary" style="flex:1; padding:0.75rem;" onclick="closeModal('detailsModal'); showSection('radar');">
+                    <i class="fa-solid fa-crosshairs"></i> View on Radar
+                </button>
+            </div>
+
+            <!-- Comments Area -->
+            <h4 style="font-size:1rem; margin-bottom:0.5rem;">Community Questions & Comments</h4>
+            <div id="detailCommentsList" style="max-height:160px; overflow-y:auto; display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1rem;">
+                <!-- Comments injected via JS -->
+            </div>
+            <form onsubmit="handleSendComment(event)" style="display:flex; gap:0.5rem;">
+                <input type="text" id="commentTextInput" class="form-control" style="margin:0;" placeholder="Ask owner a question..." required>
+                <button type="submit" class="btn-secondary" style="padding:0.75rem 1.2rem;">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- OFFICIAL SUSTAINABILITY CERTIFICATE MODAL -->
+    <div id="certificateModal" class="modal">
+        <div class="modal-content glass-panel" style="max-width:680px; text-align:center; padding:3rem 2rem;">
+            <span class="close-btn" onclick="closeModal('certificateModal')">&times;</span>
+            <div id="certificateCanvasBox" style="border: 4px double #ffd700; border-radius:18px; padding:2rem; background: linear-gradient(135deg, rgba(8, 20, 18, 0.95), rgba(12, 10, 32, 0.98)); position:relative; overflow:hidden; box-shadow:0 0 40px rgba(0, 255, 157, 0.2);">
+                <div style="font-family:'Space Grotesk', sans-serif; font-size:0.8rem; letter-spacing:3px; color:#ffd700; text-transform:uppercase; margin-bottom:0.5rem;">
+                    Official Verified Certificate of Zero-Waste Impact
+                </div>
+                <h2 style="font-size:2.2rem; font-weight:800; color:#fff; margin-bottom:0.5rem;">SHAREFLOW ENVIRONMENTAL PILLAR</h2>
+                <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.5rem;">This certifies that the following community steward has actively diverted resources from municipal landfills:</p>
+                <h1 id="certUserName" style="font-size:2.4rem; color:var(--accent-cyan); font-family:'Space Grotesk', sans-serif; margin-bottom:1.5rem;">Shuvam (Neighborhood Guardian)</h1>
+
+                <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem; margin-bottom:2rem; background:rgba(0,0,0,0.4); padding:1.2rem; border-radius:14px; border:1px solid rgba(255,215,0,0.3);">
+                    <div>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">CO₂ Avoided</div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-emerald);" id="certCo2">142.5 kg</div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">Capital Retained</div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-cyan);" id="certSaved">$1,840.00</div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">E-Waste Diverted</div>
+                        <div style="font-size:1.4rem; font-weight:700; color:var(--accent-amber);" id="certEwaste">38.2 kg</div>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--text-dim); border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem;">
+                    <span>VERIFICATION HASH: <code id="certHash" style="color:#d8b4fe;">SHA256: 7e89ab...34fc</code></span>
+                    <span>ISSUED: <strong id="certDate">October 2026</strong></span>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:1rem; justify-content:center; margin-top:1.5rem;">
+                <button class="btn-primary" onclick="downloadCertificate()">
+                    <i class="fa-solid fa-download"></i> Download High-Res PNG Certificate
+                </button>
+                <button class="btn-secondary" onclick="shareCertificate()">
+                    <i class="fa-solid fa-share-nodes"></i> Share Impact
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JOIN RAID MODAL -->
+    <div id="contributeRaidModal" class="modal">
+        <div class="modal-content glass-panel">
+            <span class="close-btn" onclick="closeModal('contributeRaidModal')">&times;</span>
+            <h2 style="margin-bottom:0.5rem;"><i class="fa-solid fa-flag" style="color:var(--accent-cyan);"></i> Contribute to Community Raid</h2>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem;">Lend an eligible item to help reach the neighborhood milestone and mint +1.5x Karma bonus.</p>
+            <form onsubmit="handleContributeToRaid(event)">
+                <div class="form-group">
+                    <label for="raidSelect">Select Active Raid</label>
+                    <select id="raidSelect" class="form-control">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="raidItemSelect">Select Item to Contribute</label>
+                    <select id="raidItemSelect" class="form-control">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; padding:0.85rem; margin-top:0.5rem;">
+                    Confirm Raid Contribution (+100 Karma)
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
